@@ -56,12 +56,24 @@ public class Main {
             index.setStoreSize(line[8]);
             index.setPriStoreSize(line[9]);
                 
+            response = client.performRequest(new Request("GET", "/" + index.getIndex() + "?pretty=true"));
+            responseBody = EntityUtils.toString(response.getEntity());
+            
+            index.setMapping(responseBody);
+            
             list.add(index);            
         }
         
         
         System.out.println(list);
         
+        
+        /*for (Index index : list) {
+            
+            response = client.performRequest(new Request("GET", "/" + index.getIndex() + "?pretty=true"));
+            responseBody = EntityUtils.toString(response.getEntity());
+            System.out.println(responseBody);
+        }*/
         
         /*response = client.performRequest(new Request("GET", "/desenv_dejt_adm?pretty=true"));
         responseBody = EntityUtils.toString(response.getEntity());

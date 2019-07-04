@@ -13,6 +13,8 @@ public class Index {
     private String deletedDocs;
     private String storeSize;
     private String priStoreSize;
+    private String mapping;
+
 
     public String getHealth() {
         return health;
@@ -94,6 +96,13 @@ public class Index {
         this.priStoreSize = priStoreSize;
     }
 
+    public String getMapping() {
+        return mapping;
+    }
+
+    public void setMapping(String mapping) {
+        this.mapping = mapping;
+    }
     
     
 }
