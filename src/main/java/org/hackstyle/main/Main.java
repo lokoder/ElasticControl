@@ -1,4 +1,4 @@
-package org.hackstyle.Main;
+package org.hackstyle.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,11 +14,30 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.hackstyle.dto.Index;
 
+/*
+http://dejt.ua01.trtsp.jus.br:9200/_cat/master?v
+
+_cat/indices?format=json&pretty=true
+
+http://dejt.ua01.trtsp.jus.br:9200/_cat/count?v
+
+http://dejt.ua01.trtsp.jus.br:9200/_cat/health?v
+
+http://dejt.ua01.trtsp.jus.br:9200/_cat/nodes?v
+
+http://dejt.ua01.trtsp.jus.br:9200/_cat/pending_tasks?v
+http://dejt.ua01.trtsp.jus.br:9200/_cat/shards?v
+https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-shards.html
+
+http://dejt.ua01.trtsp.jus.br:9200/_cat/templates?v
+
+
+*/
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
+        RestClientBuilder builder = RestClient.builder(new HttpHost("dejt.ua01.trtsp.jus.br", 9200, "http"));
         Header[] defaultHeaders = new Header[]{new BasicHeader("Content-Type", "application/json")};
         builder.setDefaultHeaders(defaultHeaders);
 
@@ -56,10 +75,17 @@ public class Main {
             index.setStoreSize(line[8]);
             index.setPriStoreSize(line[9]);
                 
-            response = client.performRequest(new Request("GET", "/" + index.getIndex() + "?pretty=true"));
+            /* index_name/_settings, index_name/_mapping, index_name/ retorna mapping + settings */
+            response = client.performRequest(new Request("GET", "/" + index.getIndex() + "/_mapping?pretty=true"));
+            responseBody = EntityUtils.toString(response.getEntity());
+    
+            index.setMapping(responseBody);
+            
+            response = client.performRequest(new Request("GET", "/" + index.getIndex() + "/_settings?pretty=true"));
             responseBody = EntityUtils.toString(response.getEntity());
             
-            index.setMapping(responseBody);
+
+            index.setSettings(responseBody);
             
             list.add(index);            
         }

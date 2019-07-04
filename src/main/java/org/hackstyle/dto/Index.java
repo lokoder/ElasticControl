@@ -14,6 +14,7 @@ public class Index {
     private String storeSize;
     private String priStoreSize;
     private String mapping;
+    private String settings;
 
 
     public String getHealth() {
@@ -103,6 +104,15 @@ public class Index {
     public void setMapping(String mapping) {
         this.mapping = mapping;
     }
+
+    public String getSettings() {
+        return settings;
+    }
+
+    public void setSettings(String settings) {
+        this.settings = settings;
+    }
+    
     
     
 }
